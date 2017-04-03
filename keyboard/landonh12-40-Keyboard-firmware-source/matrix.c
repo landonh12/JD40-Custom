@@ -136,41 +136,36 @@ uint8_t matrix_key_count(void)
 
 /* Column pin configuration
  * col: 0   1   2   3   4   5   6   7   8   9   10  11
- * pin: F0  F1  F4  F5  F6  F7  B6  B5  B0  B1  B2  B3
+ * pin: B3  B2  B1  B0  B5  B6  F7  F6  F5  F4  F1  F0
  */
 static void  init_cols(void)
 {
     // Input with pull-up(DDR:0, PORT:1)
-    DDRF  &= ~(1<<0 | 1<<1 | 1<<4 | 1<<5 | 1<<6 | 1<<7);
+    DDRF  &= ~(1>>0 | 1<<1 | 1<<4 | 1<<5 | 1<<6 | 1<<7);
     PORTF |=  (1<<0 | 1<<1 | 1<<4 | 1<<5 | 1<<6 | 1<<7);
-    DDRD  &= ~(1<<5 | 1<<3);
-    PORTD |=  (1<<5 | 1<<3);
-    DDRC  &= ~(1<<7 | 1<<6);
-    PORTC |=  (1<<7 | 1<<6);
     DDRB  &= ~(1<<6 | 1<<5 | 1<<3 | 1<<2 | 1<<1 | 1<<0);
     PORTB |=  (1<<6 | 1<<5 | 1<<3 | 1<<2 | 1<<1 | 1<<0);
 }
 
 static matrix_row_t read_cols(void)
 {
-    return (PINF&(1<<0) ? 0 : (1<<0)) |
-           (PINF&(1<<1) ? 0 : (1<<1)) |
-           (PINF&(1<<4) ? 0 : (1<<2)) |
-           (PINF&(1<<5) ? 0 : (1<<3)) |
-           (PINF&(1<<6) ? 0 : (1<<4)) |
-           (PINF&(1<<7) ? 0 : (1<<5)) |
-           (PINB&(1<<6) ? 0 : (1<<6)) |
-           (PINB&(1<<5) ? 0 : (1<<7)) |
-           (PINB&(1<<0) ? 0 : (1<<8)) |
-           (PINB&(1<<1) ? 0 : (1<<9)) |
-           (PINB&(1<<2) ? 0 : (1<<10)) |
-           (PINB&(1<<3) ? 0 : (1<<11));
+    return (PINB&(1<<3) ? 0 : (1<<0)) |
+           (PINB&(1<<2) ? 0 : (1<<1)) |
+           (PINB&(1<<1) ? 0 : (1<<2)) |
+           (PINB&(1<<0) ? 0 : (1<<3)) |
+           (PINB&(1<<5) ? 0 : (1<<4)) |
+           (PINB&(1<<6) ? 0 : (1<<5)) |
+           (PINF&(1<<7) ? 0 : (1<<6)) |
+           (PINF&(1<<6) ? 0 : (1<<7)) |
+           (PINF&(1<<5) ? 0 : (1<<8)) |
+           (PINF&(1<<4) ? 0 : (1<<9)) |
+           (PINF&(1<<1) ? 0 : (1<<10)) |
+           (PINF&(1<<0) ? 0 : (1<<11));
 }
 
 /* Row pin configuration
  * row:  0   1   2   3
- * pin:  D5  C7  C6  D3
- * Npin: E6  B7  D0  D1
+ * pin: E6  B7  D0  D1
  */
 static void unselect_rows(void)
 {
